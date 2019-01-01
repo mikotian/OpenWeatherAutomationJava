@@ -1,7 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
   
 <suite name="Suite1" verbose="1" >
-  <test name="Test1" >
+  <parameter name="baseuri" value="http://192.168.99.100:7080/"/>
+  <test name="SuiteOne" >
     <classes>
        <class name="OpenWeatherAutomationJava.Test1" />
     </classes>
