@@ -3,12 +3,21 @@ package OpenWeatherAutomationJava;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.FileHandler;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -112,7 +121,7 @@ public class Test1
 
     @Parameters({"baseuri"})
     @Test
-    public void checkauth(String baseuri) throws AWTException
+    public void checkauth(String baseuri) throws AWTException, InterruptedException, IOException
     {
         webDriver.get(baseuri);
         WebElement basiclink=webDriver.findElement(By.linkText("Basic Auth"));	
@@ -120,11 +129,19 @@ public class Test1
 
         Robot rb=new Robot();
         Alert basic=webDriver.switchTo().alert();				 
-        basic.sendKeys("admin");
+        basic.sendKeys("admin"+ Keys.TAB + "admin");
+        //Thread.sleep(2000);
         //basic.sendKeys(Keys.TAB.toString());
+        /*rb.delay(1200);
         rb.keyPress(KeyEvent.VK_TAB);
-        basic.sendKeys("admin");
+        basic=webDriver.switchTo().alert();
+        basic.sendKeys("admin");*/
+        
         basic.accept();
+        Thread.sleep(2000);
+        File screenshotFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenshotFile,
+                new File("C:\\scratch\\shots\\screenshot"+Math.random()+".png"));
 
         WebElement ptext=webDriver.findElement(By.tagName("p"));
         String text=ptext.getText();
